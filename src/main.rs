@@ -1,102 +1,6 @@
 use rand::prelude::*;
 fn main() {
-    let personagens: Vec<Personagem> = criar_personagens();
-    let thread_rng = thread_rng();
-    let mut rng: ThreadRng = thread_rng;
-    let l = i32::try_from(personagens.len()).unwrap();
-    let mut y = usize::try_from(rng.gen_range(0..l)).unwrap();
-    println!("O personagens escolhido foi {}.", personagens[y].nome);
-}
-
-fn criar_personagens() -> Vec<Personagem> {
-    let v = vec![
-        Personagem {
-            nome: String::from("SALLY"),
-            cabelo_cor: CabeloCor::Castanho,
-            pele_tonalidade: PeleTonalidade::Branca,
-            sexo: Sexo::Feminino,
-            franja: false,
-        },
-        Personagem {
-            nome: String::from("MEG"),
-            cabelo_cor: CabeloCor::Ruivo,
-            pele_tonalidade: PeleTonalidade::Branca,
-            sexo: Sexo::Feminino,
-            franja: true,
-        },
-        Personagem {
-            nome: String::from("KATE"),
-            cabelo_cor: CabeloCor::Preto,
-            pele_tonalidade: PeleTonalidade::Parda,
-            sexo: Sexo::Feminino,
-            franja: false,
-        },
-        Personagem {
-            nome: String::from("JOSH"),
-            cabelo_cor: CabeloCor::Loiro,
-            pele_tonalidade: PeleTonalidade::Branca,
-            sexo: Sexo::Masculino,
-            franja: true,
-        },
-        Personagem {
-            nome: String::from("KEVIN"),
-            cabelo_cor: CabeloCor::Castanho,
-            pele_tonalidade: PeleTonalidade::Branca,
-            sexo: Sexo::Masculino,
-            franja: false,
-        },
-        Personagem {
-            nome: String::from("JULIA"),
-            cabelo_cor: CabeloCor::Preto,
-            pele_tonalidade: PeleTonalidade::Parda,
-            sexo: Sexo::Feminino,
-            franja: true,
-        },
-        Personagem {
-            nome: String::from("LAURA"),
-            cabelo_cor: CabeloCor::Loiro,
-            pele_tonalidade: PeleTonalidade::Branca,
-            sexo: Sexo::Feminino,
-            franja: true,
-        },
-        Personagem {
-            nome: String::from("JESS"),
-            cabelo_cor: CabeloCor::Preto,
-            pele_tonalidade: PeleTonalidade::Branca,
-            sexo: Sexo::Feminino,
-            franja: false,
-        },
-        Personagem {
-            nome: String::from("PAT"),
-            cabelo_cor: CabeloCor::Ruivo,
-            pele_tonalidade: PeleTonalidade::Branca,
-            sexo: Sexo::Feminino,
-            franja: false,
-        },
-        Personagem {
-            nome: String::from("ALEX"),
-            cabelo_cor: CabeloCor::Loiro,
-            pele_tonalidade: PeleTonalidade::Branca,
-            sexo: Sexo::Feminino,
-            franja: true,
-        },
-        Personagem {
-            nome: String::from("SARA"),
-            cabelo_cor: CabeloCor::Preto,
-            pele_tonalidade: PeleTonalidade::Parda,
-            sexo: Sexo::Feminino,
-            franja: false,
-        },
-        Personagem {
-            nome: String::from("MIKE"),
-            cabelo_cor: CabeloCor::Preto,
-            pele_tonalidade: PeleTonalidade::Negra,
-            sexo: Sexo::Masculino,
-            franja: false,
-        },
-    ];
-
-    v
+    let mut jogo = Jogo();
 }
 
 enum CabeloCor {
@@ -123,4 +27,146 @@ struct Personagem {
     pele_tonalidade: PeleTonalidade,
     sexo: Sexo,
     franja: bool,
+}
+
+struct Jogador {
+    nome: String,
+    personagem: Option<Personagem>,
+    universo_de_busca: Option<Vec<Personagem>>,
+}
+
+struct Jogo {
+    rodada: i32,
+    rng: ThreadRng,
+    jogadores: Vec<Jogador>,
+    personagens: Vec<Personagem>,
+}
+
+struct Rodada {
+    idx: i32,
+    idxJogadorVencedor: i32,
+    jogadas: i32,
+}
+
+impl Jogo {
+    pub fn new() -> Self {
+        Self {
+            rodada: Vec<Rodada>::new(),
+            rng: thread_rng(),
+            personagens: Self::criar_personagens(),
+            jogadores: Self::criar_jogadores(),
+                        
+        }
+    }
+
+    pub fn jogar_dados() {
+        let mut i = usize::try_from(rng.gen_range(0..i32::try_from(Self::personagens.len()).unwrap())).unwrap();
+        println!("O personagem escolhido foi {}.", Self::personagens[i].nome);
+    }
+
+    fn criar_jogadores() -> Vec<Jogador> {
+        let v = vec![
+            Jogador {
+                nome: String::from("ALICE"),
+                personagem: None,
+                universo_de_busca: None,
+            },
+            Jogador {
+                nome: String::from("BOB"),
+                personagem: None,
+                universo_de_busca: None,
+            },
+        ];
+        v
+    }
+
+    fn criar_personagens() -> Vec<Personagem> {
+        let v = vec![
+            Personagem {
+                nome: String::from("SALLY"),
+                cabelo_cor: CabeloCor::Castanho,
+                pele_tonalidade: PeleTonalidade::Branca,
+                sexo: Sexo::Feminino,
+                franja: false,
+            },
+            Personagem {
+                nome: String::from("MEG"),
+                cabelo_cor: CabeloCor::Ruivo,
+                pele_tonalidade: PeleTonalidade::Branca,
+                sexo: Sexo::Feminino,
+                franja: true,
+            },
+            Personagem {
+                nome: String::from("KATE"),
+                cabelo_cor: CabeloCor::Preto,
+                pele_tonalidade: PeleTonalidade::Parda,
+                sexo: Sexo::Feminino,
+                franja: false,
+            },
+            Personagem {
+                nome: String::from("JOSH"),
+                cabelo_cor: CabeloCor::Loiro,
+                pele_tonalidade: PeleTonalidade::Branca,
+                sexo: Sexo::Masculino,
+                franja: true,
+            },
+            Personagem {
+                nome: String::from("KEVIN"),
+                cabelo_cor: CabeloCor::Castanho,
+                pele_tonalidade: PeleTonalidade::Branca,
+                sexo: Sexo::Masculino,
+                franja: false,
+            },
+            Personagem {
+                nome: String::from("JULIA"),
+                cabelo_cor: CabeloCor::Preto,
+                pele_tonalidade: PeleTonalidade::Parda,
+                sexo: Sexo::Feminino,
+                franja: true,
+            },
+            Personagem {
+                nome: String::from("LAURA"),
+                cabelo_cor: CabeloCor::Loiro,
+                pele_tonalidade: PeleTonalidade::Branca,
+                sexo: Sexo::Feminino,
+                franja: true,
+            },
+            Personagem {
+                nome: String::from("JESS"),
+                cabelo_cor: CabeloCor::Preto,
+                pele_tonalidade: PeleTonalidade::Branca,
+                sexo: Sexo::Feminino,
+                franja: false,
+            },
+            Personagem {
+                nome: String::from("PAT"),
+                cabelo_cor: CabeloCor::Ruivo,
+                pele_tonalidade: PeleTonalidade::Branca,
+                sexo: Sexo::Feminino,
+                franja: false,
+            },
+            Personagem {
+                nome: String::from("ALEX"),
+                cabelo_cor: CabeloCor::Loiro,
+                pele_tonalidade: PeleTonalidade::Branca,
+                sexo: Sexo::Feminino,
+                franja: true,
+            },
+            Personagem {
+                nome: String::from("SARA"),
+                cabelo_cor: CabeloCor::Preto,
+                pele_tonalidade: PeleTonalidade::Parda,
+                sexo: Sexo::Feminino,
+                franja: false,
+            },
+            Personagem {
+                nome: String::from("MIKE"),
+                cabelo_cor: CabeloCor::Preto,
+                pele_tonalidade: PeleTonalidade::Negra,
+                sexo: Sexo::Masculino,
+                franja: false,
+            },
+        ];
+        v
+    }
 }
