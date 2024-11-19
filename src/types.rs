@@ -10,15 +10,6 @@ impl Jogo {
         }
     }
 
-    pub fn jogar_dados(&mut self) {
-        let i = usize::try_from(
-            self.rng
-                .gen_range(0..i32::try_from(self.personagens.len()).unwrap()),
-        )
-        .unwrap();
-        println!("O personagem escolhido foi {}.", self.personagens[i].nome);
-    }
-
     fn criar_jogadores() -> Vec<Jogador> {
         let v = vec![
             Jogador {
@@ -129,24 +120,15 @@ impl Jogo {
         ];
         v
     }
-}
 
-pub enum CabeloCor {
-    Preto,
-    Loiro,
-    Ruivo,
-    Castanho,
-}
+    pub fn atribuir_personagens(&mut self) {
+        let range: Vec<u32> = (1..=12).collect(); // Replace with your desired range
+        let mut shuffled = range.clone();
 
-pub enum PeleTonalidade {
-    Branca,
-    Parda,
-    Negra,
-}
-
-pub enum Sexo {
-    Masculino,
-    Feminino,
+        shuffled.shuffle(&mut self.rng); // Shuffle the entire range
+        let numbers: Vec<u32> = shuffled.into_iter().take(3).collect();
+        println!("Random unique numbers: {:?}", numbers);
+    }
 }
 
 pub struct Personagem {
@@ -174,4 +156,22 @@ pub struct Rodada {
     idx: i32,
     idxJogadorVencedor: i32,
     jogadas: i32,
+}
+
+pub enum CabeloCor {
+    Preto,
+    Loiro,
+    Ruivo,
+    Castanho,
+}
+
+pub enum PeleTonalidade {
+    Branca,
+    Parda,
+    Negra,
+}
+
+pub enum Sexo {
+    Masculino,
+    Feminino,
 }
