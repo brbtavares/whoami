@@ -1,6 +1,7 @@
 use rand::prelude::*;
 fn main() {
-    let mut jogo = Jogo();
+    let mut jogo = Jogo::new();
+    jogo.jogar_dados();
 }
 
 enum CabeloCor {
@@ -36,7 +37,7 @@ struct Jogador {
 }
 
 struct Jogo {
-    rodada: i32,
+    rodadas: Vec<Rodada>,
     rng: ThreadRng,
     jogadores: Vec<Jogador>,
     personagens: Vec<Personagem>,
@@ -51,17 +52,20 @@ struct Rodada {
 impl Jogo {
     pub fn new() -> Self {
         Self {
-            rodada: Vec<Rodada>::new(),
+            rodadas: Vec::new(),
             rng: thread_rng(),
             personagens: Self::criar_personagens(),
             jogadores: Self::criar_jogadores(),
-                        
         }
     }
 
-    pub fn jogar_dados() {
-        let mut i = usize::try_from(rng.gen_range(0..i32::try_from(Self::personagens.len()).unwrap())).unwrap();
-        println!("O personagem escolhido foi {}.", Self::personagens[i].nome);
+    pub fn jogar_dados(&mut self) {
+        let i = usize::try_from(
+            self.rng
+                .gen_range(0..i32::try_from(self.personagens.len()).unwrap()),
+        )
+        .unwrap();
+        println!("O personagem escolhido foi {}.", self.personagens[i].nome);
     }
 
     fn criar_jogadores() -> Vec<Jogador> {
