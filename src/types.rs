@@ -122,16 +122,21 @@ impl Jogo {
     }
 
     pub fn atribuir_personagens(&mut self) {
-        let range: Vec<u32> = (1..=12).collect(); // Replace with your desired range
+        let range: Vec<usize> = (1..12).collect(); // Replace with your desired range
         let mut shuffled = range.clone();
 
         shuffled.shuffle(&mut self.rng); // Shuffle the entire range
-        let numbers: Vec<u32> = shuffled.into_iter().take(3).collect();
+        let numbers: Vec<usize> = shuffled.into_iter().take(3).collect();
         println!("Random unique numbers: {:?}", numbers);
+        self.jogadores[0].personagem = Some(self.personagens[numbers[0]].clone());
+        self.jogadores[1].personagem = Some(self.personagens[numbers[1]].clone());
+        self.jogadores[2].personagem = Some(self.personagens[numbers[2]].clone());
+
     }
 }
 
-pub struct Personagem {
+#[derive(Clone)]
+struct Personagem {
     nome: String,
     cabelo_cor: CabeloCor,
     pele_tonalidade: PeleTonalidade,
@@ -139,12 +144,14 @@ pub struct Personagem {
     franja: bool,
 }
 
-pub struct Jogador {
+#[derive(Clone)]
+struct Jogador {
     nome: String,
     personagem: Option<Personagem>,
     universo_de_busca: Option<Vec<Personagem>>,
 }
 
+#[derive(Clone)]
 pub struct Jogo {
     rodadas: Vec<Rodada>,
     rng: ThreadRng,
@@ -152,26 +159,30 @@ pub struct Jogo {
     personagens: Vec<Personagem>,
 }
 
-pub struct Rodada {
+#[derive(Clone)]
+struct Rodada {
     idx: i32,
     idxJogadorVencedor: i32,
     jogadas: i32,
 }
 
-pub enum CabeloCor {
+#[derive(Clone)]
+enum CabeloCor {
     Preto,
     Loiro,
     Ruivo,
     Castanho,
 }
 
-pub enum PeleTonalidade {
+#[derive(Clone)]
+enum PeleTonalidade {
     Branca,
     Parda,
     Negra,
 }
 
-pub enum Sexo {
+#[derive(Clone)]
+enum Sexo {
     Masculino,
     Feminino,
 }
