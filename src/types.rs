@@ -5,33 +5,17 @@ impl Jogo {
         Self {
             rodadas: Vec::new(),
             rng: thread_rng(),
-            personagens: Self::criar_personagens(),
-            jogadores: Self::criar_jogadores(),
+            universo_de_busca: Self::criar_universo_de_busca(),
+            personagem: None,
         }
     }
 
-    fn criar_jogadores() -> Vec<Jogador> {
-        let v = vec![
-            Jogador {
-                nome: String::from("ALICE"),
-                personagem: None,
-                universo_de_busca: None,
-            },
-            Jogador {
-                nome: String::from("BOB"),
-                personagem: None,
-                universo_de_busca: None,
-            },
-            Jogador {
-                nome: String::from("CHARLES"),
-                personagem: None,
-                universo_de_busca: None,
-            },
-        ];
-        v
+    pub fn atribuir_personagem(&mut self) {
+        let random_number: usize = self.rng.gen_range(0..12) as usize;
+        self.personagem = Some(self.universo_de_busca[random_number].clone());
     }
 
-    fn criar_personagens() -> Vec<Personagem> {
+    fn criar_universo_de_busca() -> Vec<Personagem> {
         let v = vec![
             Personagem {
                 nome: String::from("SALLY"),
@@ -120,19 +104,6 @@ impl Jogo {
         ];
         v
     }
-
-    pub fn atribuir_personagens(&mut self) {
-        let range: Vec<usize> = (1..12).collect(); // Replace with your desired range
-        let mut shuffled = range.clone();
-
-        shuffled.shuffle(&mut self.rng); // Shuffle the entire range
-        let numbers: Vec<usize> = shuffled.into_iter().take(3).collect();
-        println!("Random unique numbers: {:?}", numbers);
-        self.jogadores[0].personagem = Some(self.personagens[numbers[0]].clone());
-        self.jogadores[1].personagem = Some(self.personagens[numbers[1]].clone());
-        self.jogadores[2].personagem = Some(self.personagens[numbers[2]].clone());
-
-    }
 }
 
 #[derive(Clone)]
@@ -145,25 +116,16 @@ struct Personagem {
 }
 
 #[derive(Clone)]
-struct Jogador {
-    nome: String,
-    personagem: Option<Personagem>,
-    universo_de_busca: Option<Vec<Personagem>>,
-}
-
-#[derive(Clone)]
 pub struct Jogo {
     rodadas: Vec<Rodada>,
     rng: ThreadRng,
-    jogadores: Vec<Jogador>,
-    personagens: Vec<Personagem>,
+    personagem: Option<Personagem>,
+    universo_de_busca: Vec<Personagem>,
 }
 
 #[derive(Clone)]
 struct Rodada {
     idx: i32,
-    idxJogadorVencedor: i32,
-    jogadas: i32,
 }
 
 #[derive(Clone)]
